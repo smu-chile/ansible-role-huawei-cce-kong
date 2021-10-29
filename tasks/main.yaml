@@ -18,5 +18,15 @@
 
 ## Kong
 
-- name: Setup Konh namespace
-  shell: echo "{{ lookup('template', 'kong.yaml') }}" | kubectl apply -f -
+- name: Creating kong.yaml
+  template:
+    src: kong.j2
+    dest: kong.yaml
+
+- name: Setup Harness
+  shell: kubectl apply -f kong.yaml
+
+- name: Deleting kong.yaml
+  file:
+    path: kong.yaml
+    state: absent
