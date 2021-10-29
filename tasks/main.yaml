@@ -1,0 +1,22 @@
+- name: "Verify that required string variables are defined"
+  assert:
+    that: 
+      - required_variable is defined
+      - required_variable | length > 0
+      - required_variable != None
+    fail_msg: "{{ required_variable }} needs to be set for the role to work"
+    success_msg: "Required variable {{ required_variable}} is defined"
+  loop_control:
+    loop_var: required_variable
+  with_items:
+    - "{{ LB_ID }}"
+    - "{{ LB_VIP_SUBNET_ID }}"
+    - "{{ LB_PUBLIC_IP }}"
+    - "{{ KONG_HOSTNAME }}"
+  no_log: True
+  
+
+## Kong
+
+- name: Setup Konh namespace
+  shell: echo "{{ lookup('template', 'kong.yaml') }}" | kubectl apply -f -
