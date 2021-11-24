@@ -1,18 +1,17 @@
-Huawei CCE Setup
+Huawei Loadbalancer - Kong
 =========
 
-Role to setup a bastion to connect with a cce cluster
-
+Ansible Role to setup a API Gateway Kong with a Huawei Load Balancer
 
 
 Role Variables
 --------------
 
 ```
-      LB_ID: id de Balanceador, se obtiene de terraform
-      LB_VIP_SUBNET_ID: id de subnet de balanceador, se obtiene de terraform
-      LB_PUBLIC_IP: IP publica de balanceador
-      KONG_HOSTNAME: hostname donde se alojara Traefik, esto crea un registro A, apuntando a la Ip del balanceador:
+      LB_ID: Load Balancer ID
+      LB_VIP_SUBNET_ID: Loadbalancer Subnet Id 
+      LB_PUBLIC_IP: Public IP of Loadbalancer
+      KONG_HOSTNAME: DNS hostname of Loadbalancer to be created with external-dns. An A Record will be created. 
 ```
 
 Example Playbook
@@ -24,19 +23,18 @@ Example Playbook
   become: no
   remote_user: "root"
 
-# Uncomment "aws-eks-setup" role only if you are upgrading the cluster
   roles:
     - role: ansible-role-huawei-cce-kong
       LB_ID: "{{ lookup('env', 'LB_ID') }}"
       LB_VIP_SUBNET_ID: "{{ lookup('env', 'LB_SUBNET_ID') }}"
-      KONG_HOSTNAME: "{{ lookup('env', 'TRAEFIK_HOSTNAME') }}"
+      KONG_HOSTNAME: "{{ lookup('env', 'KONG_HOSTNAME') }}"
       LB_PUBLIC_IP: "{{ lookup('env', 'LB_PUBLIC_IP') }}"
 ```
 
-License
--------
+Requirement
+----------------
 
-BSD
+* [extenral-dns](https://github.com/kubernetes-sigs/external-dns)
 
 Author Information
 ------------------
