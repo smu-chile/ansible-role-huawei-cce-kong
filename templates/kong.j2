@@ -1465,6 +1465,10 @@ spec:
           value: 128k
         - name: KONG_NGINX_PROXY_PROXY_BUFFERS
           value: 8 256k
+        - name: KONG_NGINX_HTTP_SSL_PROTOCOLS
+          value: TLSv1.0 TLSv1.1 TLSv1.2 TLSv1.3
+        - name: KONG_SSL_CIPHER_SUITE
+          value: old
         image: kong:2.8
         lifecycle:
           preStop:
